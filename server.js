@@ -7,6 +7,7 @@ dotenv.config(); // Carrega as variáveis definidas no arquivo '.env' para proce
 //Importar as bibliotecas
 
 const express = require('express'); // Importa a fremework express
+const bodyParser = require('body-parser');
 const cors = require('cors'); // Importa o pacote cors para permitir requisições de diferentes origens
 
 const dados = require('./configurar/dados'); // Importa a conexão com o banco de dados
@@ -18,6 +19,22 @@ const app = express(); // Inicializar uma nova aplicação Express
 // Configurar o CORS e o BADY-PARSE
 
 app.use(cors()); // Habilita o CORS para todas as rotas
-app.use(bodyparser.json()); // Configura o BODY-PARSER para analisar requisições JSON
+app.use(bodyParser.json()); // Configura o BODY-PARSER para analisar requisições JSON
 
 //Usar as rotas de TRANSAÇÕES e AUTENTICAÇÕES para as requisições
+
+//app.use('/api/transactions', transactionsRoutes); // Configura o servidor para usar as rotas de transações
+//app.use('/api/auth', authRoutes); // Configura o servidor para usar as rotas de autenticação
+
+// Rota inicial para testar o servidor
+
+app.get('/', (req, res) => {
+    res.send(`Servidor está rodando na porta ${PORT}`); // Define uma rota inicial para testar o servidor
+  });
+
+//Configurar o servidor para uma porta específica
+
+const PORT = process.env.PORT || 3000; // Define a porta a partir da variável de ambiente ou usa a porta 3000 como padrão
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`); // Loga uma mensagem informando que o servidor está rodando
+});
