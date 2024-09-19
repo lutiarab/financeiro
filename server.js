@@ -21,20 +21,23 @@ const app = express(); // Inicializar uma nova aplicação Express
 app.use(cors()); // Habilita o CORS para todas as rotas
 app.use(bodyParser.json()); // Configura o BODY-PARSER para analisar requisições JSON
 
+const transactionsRoutes = require('./rotas/transactions')
+// const authRoutes = require('./rotas/auth')
 //Usar as rotas de TRANSAÇÕES e AUTENTICAÇÕES para as requisições
 
-//app.use('/api/transactions', transactionsRoutes); // Configura o servidor para usar as rotas de transações
-//app.use('/api/auth', authRoutes); // Configura o servidor para usar as rotas de autenticação
+app.use('/api/transactions', transactionsRoutes); // Configura o servidor para usar as rotas de transações
+// app.use('/api/auth', authRoutes); // Configura o servidor para usar as rotas de autenticação
 
 // Rota inicial para testar o servidor
 
 app.get('/', (req, res) => {
-    res.send(`Servidor está rodando na porta ${PORT}`); // Define uma rota inicial para testar o servidor
-  });
+  res.send(`Servidor está rodando na porta ${PORT}`); // Define uma rota inicial para testar o servidor
+});
 
 //Configurar o servidor para uma porta específica
 
 const PORT = process.env.PORT || 3000; // Define a porta a partir da variável de ambiente ou usa a porta 3000 como padrão
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`); // Loga uma mensagem informando que o servidor está rodando
 });

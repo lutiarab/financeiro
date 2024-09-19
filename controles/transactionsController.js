@@ -2,7 +2,7 @@ const dados = require('../configurar/dados'); // Importar a conexão com o banco
  
 // Função para obter todas as trasações
 const getAllTransactions = (req, res) => {
-    dados.query('SELECT * FROM transactions', (err, resuts) => {
+    dados.query('SELECT * FROM transactions', (err, results) => {
         if (err) {
             console.error('Erro ao ober o transactions:', err);
             res.status(500).send('Erro ao obter transações');
@@ -38,10 +38,10 @@ const addTransaction = (req, res) => {
 
         // Se a transação não existe, insira-a no banco de dados
         
-            db.query(
+            dados.query(
                 'INSERT INTO transactions (data, amount, description, category, account, loguin_id) VALUES (?,?,?,?,?,?)',
                 [data, amount, description, category, account, loguin_id],
-                (err,results) => {
+                (err, results) => {
                     if(err) {
                         console.error('Erro ao adicionar transação', err);
                         res.status(500).send('Erro ao adicionar transação');
