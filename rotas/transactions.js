@@ -23,24 +23,5 @@ router.delete('/:id', transactionsController.deleteTransactions);
 
 
 
-//----------------------------- Estoque de números -------------------------------------------------------------
-
-// Definindo uma rota para obter todas as transações
-router.get('/', transactionsController.getAllGastos);
-
-//Definindo uma rota para adicionar uma nova transação
-router.post('/', transactionsController.addGastos);
-
-//Definindo uma rota para atualizar uma trasação existente(substituição completa)
-router.put('/:id', transactionsController.updateGastosPut);
-
-//Definindo uma rota para atualizar uma trasação existente(substituição parcial)
-router.patch('/:id', transactionsController.updateGastosPatch);
-
-//Definindo uma rota para deletar uma transação
-router.delete('/:id', transactionsController.deleteGastos);
-
-
-
 //Exportando o roteador
 module.exports = router;

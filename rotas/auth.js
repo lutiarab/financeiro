@@ -1,18 +1,18 @@
-// const express = require('express'); // Importa o framework Express 
-// const router = express.Router(); // Cria um novo roteador 
-// const authController = require('../controles/authController'); // Importa o controlador de autenticação 
+ const express = require('express'); // Importa o framework Express 
+ const router = express.Router(); // Cria um novo roteador 
+ const authController = require('../controles/authController'); // Importa o controlador de autenticação 
 
-// // Rota para registro de usuário 
-// router.post('/register', authController.registerLoguin); 
+ // Rota para registro de usuário 
+ router.post('/register', authController.registerLoguin); 
 
-// // Rota para login de usuário 
-// router.post('/login', authController.loginLoguin); 
+ // Rota para login de usuário 
+ router.post('/login', authController.loginLoguin); 
 
-// // Rota para solicitar redefinição de senha
-// router.post('/request-senha-reset', authController.requestSenhaReset);
+ // Rota para solicitar redefinição de senha
+ router.post('/request-senha-reset', authController.requestSenhaReset);
 
-// // Rota para redefinir a senha
-// router.post('/reset-senha', authController.resetSenha); 
+ // Rota para redefinir a senha
+ router.post('/reset-senha', authController.resetSenha); 
 
 
-// module.exports = router; // Exporta o roteador
+ module.exports = router; // Exporta o roteador
