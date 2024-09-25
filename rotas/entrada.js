@@ -1,6 +1,6 @@
 const express = require('express'); // Importar a fremework express
 const router = express.Router(); // Criar um roteador
-const gastosController = require('../controles/gastosController'); //Importa o controlador
+const entradaController = require('../controles/entradaController'); //Importa o controlador
 
 
 
@@ -8,19 +8,19 @@ const gastosController = require('../controles/gastosController'); //Importa o c
 //---------------------------------------------- Estoque de números -------------------------------------------------------------
 
 // Definindo uma rota para obter todas as transações
-router.get('/', gastosController.getAllGastos);
+router.get('/', entradaController.getAllEntrada);
 
 //Definindo uma rota para adicionar uma nova transação
-router.post('/', gastosController.addGastos);
+router.post('/', entradaController.addEntrada);
 
 //Definindo uma rota para atualizar uma trasação existente(substituição completa)
-router.put('/:id', gastosController.updateGastosPut);
+router.put('/:id', entradaController.updateEntradaPut);
 
 //Definindo uma rota para atualizar uma trasação existente(substituição parcial)
-router.patch('/:id', gastosController.updateGastosPatch);
+router.patch('/:id', entradaController.updateEntradaPatch);
 
 //Definindo uma rota para deletar uma transação
-router.delete('/:id', gastosController.deleteGastos);
+router.delete('/:id', entradaController.deleteEntrada);
 
 
 //Exportando o roteador

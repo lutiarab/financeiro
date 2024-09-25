@@ -5,8 +5,8 @@ const dados = require('../configurar/dados'); // Importar a conexão com o banco
 //-------------------------------------------------------------------- Estoque de números -------------------------------------------------------------
 
 // Função para obter todas as trasações
-const getAllGastos = (req, res) => {
-    dados.query('SELECT * FROM gastos_db', (err, results) => {
+const getAllEntrada = (req, res) => {
+    dados.query('SELECT * FROM entrada', (err, results) => {
         if (err) {
             console.error('Erro ao ober o gastos:', err);
             res.status(500).send('Erro ao obter gastos');
@@ -20,13 +20,13 @@ const getAllGastos = (req, res) => {
 
 // Função para adicionar uma nova transação
 
-const addGastos = (req, res) => {
-    const {entradas, saidas, total, valor, tipo, transactions_id} = req.body;
+const addEntrada = (req, res) => {
+    const {total, descricao, valor, tipo, clientes_id} = req.body;
 
         // Verificar se a transação já existe
 
-        dados.query('SELECT * FROM gastos_db WHERE  entradas=? AND saidas=? AND total=? AND valor=? AND tipo=? AND transactions_id=?', 
-            [entradas, saidas, total, valor, tipo, transactions_id],
+        dados.query('SELECT * FROM entrada WHERE  total=? AND descricao=? AND valor=? AND tipo=? AND clientes_id=?', 
+            [total, descricao, valor, tipo, clientes_id],
         (err, results) => {
             if(err) {
                 console.error('Erro ao adicionar gastos', err);
@@ -41,8 +41,8 @@ const addGastos = (req, res) => {
         // Se a transação não existe, insira-a no banco de dados
         
             dados.query(
-                'INSERT INTO gastos_db (entradas, saidas, total, valor, tipo, transactions_id) VALUES (?,?,?,?,?,?)',
-                [entradas, saidas, total, valor, tipo, transactions_id],
+                'INSERT INTO entrada (total, descricao, valor, tipo, clientes_id) VALUES (?,?,?,?,?)',
+                [total, descricao, valor, tipo, clientes_id],
                 (err, results) => {
                     if(err) {
                         console.error('Erro ao adicionar gastos', err);
@@ -62,12 +62,12 @@ const addGastos = (req, res) => {
 
 // Função para atualizar uma transação existente (Substituição Completa)
 
-const updateGastosPut = (req, res) => {
+const updateEntradaPut = (req, res) => {
     const{id} = req.params;
-    const {entradas, saidas, total, valor, tipo, transactions_id} = req.body;
+    const {total, descricao, valor, tipo, clientes_id} = req.body;
     dados.query(
-        'UPDATE gastos_db SET entradas = ?, saidas = ?, total = ?, valor = ?, tipo = ?, transactions_id = ? WHERE id = ?',
-        [entradas, saidas, total, valor, tipo, transactions_id,id],
+        'UPDATE entrada SET total = ?, descricao = ?, valor = ?, tipo = ?, clientes_id = ? WHERE id = ?',
+        [total, descricao, valor, tipo, clientes_id, id],
         (err, results) => {
             if(err) {
                 console.error('Erro ao atualizar gastos', err);
@@ -91,7 +91,7 @@ const updateGastosPut = (req, res) => {
 
 // Função para atualizar uma transação existente (substituição parcial)
 
-const updateGastosPatch = (req, res) => {
+const updateEntradaPatch = (req, res) => {
     const{id} = req.params;
     const fields = req.body;
     const query = [];
@@ -105,7 +105,7 @@ const updateGastosPatch = (req, res) => {
     values.push(id);
 
     dados.query(
-        `UPDATE gastos_db SET ${query.join(',')} WHERE id = ?`,
+        `UPDATE entrada SET ${query.join(',')} WHERE id = ?`,
         values,
         (err,results) => {
             if(err) {
@@ -131,9 +131,9 @@ const updateGastosPatch = (req, res) => {
 
 //Função para deletar uma transação existente
 
-const deleteGastos = (req,res) => {
+const deleteEntrada = (req,res) => {
     const{id} = req.params;
-    dados.query('DELETE FROM gastos_db WHERE id = ?',[id],
+    dados.query('DELETE FROM entrada WHERE id = ?',[id],
     (err,results) => {
         if(err) {
             console.error('Erro ao deletar gastos', err);
@@ -154,9 +154,9 @@ const deleteGastos = (req,res) => {
 
     
 module.exports = {
-    getAllGastos,
-    addGastos,
-    updateGastosPut,
-    updateGastosPatch,
-    deleteGastos
+    getAllEntrada,
+    addEntrada,
+    updateEntradaPut,
+    updateEntradaPatch,
+    deleteEntrada
 }

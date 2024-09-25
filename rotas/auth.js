@@ -3,10 +3,10 @@
  const authController = require('../controles/authController'); // Importa o controlador de autenticação 
 
  // Rota para registro de usuário 
- router.post('/register', authController.registerLoguin); 
+ router.post('/register', authController.registerClientes); 
 
  // Rota para login de usuário 
- router.post('/login', authController.loginLoguin); 
+ router.post('/login', authController.loginClientes); 
 
  // Rota para solicitar redefinição de senha
  router.post('/request-senha-reset', authController.requestSenhaReset);

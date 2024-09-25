@@ -1,24 +1,24 @@
 const express = require('express'); // Importar a fremework express
 const router = express.Router(); // Criar um roteador
-const transactionsController = require('../controles/transactionsController'); //Importa o controlador
+const saidasController = require('../controles/saidasController'); //Importa o controlador
 
 // const authMiddleware = require('../middlewares/authMiddleware'); // Importa o middleware de autenticação 
 
 
 // Definindo uma rota para obter todas as transações
-router.get('/', transactionsController.getAllTransactions);
+router.get('/', saidasController.getAllSaidas);
 
 //Definindo uma rota para adicionar uma nova transação
-router.post('/', transactionsController.addTransaction);
+router.post('/', saidasController.addSaidas);
 
 //Definindo uma rota para atualizar uma trasação existente(substituição completa)
-router.put('/:id', transactionsController.updateTransactionPut);
+router.put('/:id', saidasController.updateSaidasPut);
 
 //Definindo uma rota para atualizar uma trasação existente(substituição parcial)
-router.patch('/:id', transactionsController.updateTransactionPatch);
+router.patch('/:id', saidasController.updateSaidasPatch);
 
 //Definindo uma rota para deletar uma transação
-router.delete('/:id', transactionsController.deleteTransactions);
+router.delete('/:id', saidasController.deleteSaidas);
 
 
 

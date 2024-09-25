@@ -1,8 +1,8 @@
 const dados = require('../configurar/dados'); // Importar a conexão com o banco de dados
  
 // Função para obter todas as trasações
-const getAllTransactions = (req, res) => {
-    dados.query('SELECT * FROM transactions', (err, results) => {
+const getAllSaidas = (req, res) => {
+    dados.query('SELECT * FROM saidas', (err, results) => {
         if (err) {
             console.error('Erro ao ober o transactions:', err);
             res.status(500).send('Erro ao obter transações');
@@ -18,13 +18,13 @@ const getAllTransactions = (req, res) => {
 
 // Função para adicionar uma nova transação
 
-const addTransaction = (req, res) => {
-    const {data, amount, description, category, account, loguin_id} = req.body;
+const addSaidas = (req, res) => {
+    const {total_saidas, descricao_saidas, valor_saidas, tipo_saidas, entrada_id} = req.body;
 
         // Verificar se a transação já existe
 
-        dados.query('SELECT * FROM transactions WHERE  data=? AND amount=? AND description=? AND category=? AND account=? AND loguin_id=?', 
-            [data, amount, description, category, account, loguin_id],
+        dados.query('SELECT * FROM saidas WHERE  total_saidas=? AND descricao_saidas=? AND valor_saidas=? AND tipo_saidas=? AND entrada_id=?', 
+            [total_saidas, descricao_saidas, valor_saidas, tipo_saidas, entrada_id],
         (err, results) => {
             if(err) {
                 console.error('Erro ao adicionar transação', err);
@@ -39,8 +39,8 @@ const addTransaction = (req, res) => {
         // Se a transação não existe, insira-a no banco de dados
         
             dados.query(
-                'INSERT INTO transactions (data, amount, description, category, account, loguin_id) VALUES (?,?,?,?,?,?)',
-                [data, amount, description, category, account, loguin_id],
+                'INSERT INTO saidas (total_saidas, descricao_saidas, valor_saidas, tipo_saidas, entrada_id) VALUES (?,?,?,?,?)',
+                [total_saidas, descricao_saidas, valor_saidas, tipo_saidas, entrada_id],
                 (err, results) => {
                     if(err) {
                         console.error('Erro ao adicionar transação', err);
@@ -63,12 +63,12 @@ const addTransaction = (req, res) => {
 
 // Função para atualizar uma transação existente (Substituição Completa)
 
-const updateTransactionPut = (req, res) => {
+const updateSaidasPut = (req, res) => {
     const{id} = req.params;
-    const {data, amount, description, category, account, loguin_id} = req.body;
+    const {total_saidas, descricao_saidas, valor_saidas, tipo_saidas, entrada_id} = req.body;
     dados.query(
-        'UPDATE transactions SET data = ?, amount = ?, description = ?, category = ?, account = ?, loguin_id = ? WHERE id = ?',
-        [data, amount, description, category, account, loguin_id,id],
+        'UPDATE saidas SET total_saidas = ?, descricao_saidas = ?, valor_saidas = ?, tipo_saidas = ?, entrada_id = ? WHERE id = ?',
+        [total_saidas, descricao_saidas, valor_saidas, tipo_saidas, entrada_id,id],
         (err, results) => {
             if(err) {
                 console.error('Erro ao atualizar transação', err);
@@ -91,7 +91,7 @@ const updateTransactionPut = (req, res) => {
 
 // Função para atualizar uma transação existente (substituição parcial)
 
-const updateTransactionPatch = (req, res) => {
+const updateSaidasPatch = (req, res) => {
     const{id} = req.params;
     const fields = req.body;
     const query = [];
@@ -105,7 +105,7 @@ const updateTransactionPatch = (req, res) => {
     values.push(id);
 
     dados.query(
-        `UPDATE transactions SET ${query.join(',')} WHERE id = ?`,
+        `UPDATE saidas SET ${query.join(',')} WHERE id = ?`,
         values,
         (err,results) => {
             if(err) {
@@ -130,9 +130,9 @@ const updateTransactionPatch = (req, res) => {
 
 //Função para deletar uma transação existente
 
-const deleteTransactions = (req,res) => {
+const deleteSaidas = (req,res) => {
     const{id} = req.params;
-    dados.query('DELETE FROM transactions WHERE id = ?',[id],
+    dados.query('DELETE FROM saidas WHERE id = ?',[id],
     (err,results) => {
         if(err) {
             console.error('Erro ao deletar transação', err);
@@ -154,9 +154,9 @@ const deleteTransactions = (req,res) => {
 
 
 module.exports = {
-    getAllTransactions,
-    addTransaction,
-    updateTransactionPut,
-    updateTransactionPatch,
-    deleteTransactions
+    getAllSaidas,
+    addSaidas,
+    updateSaidasPut,
+    updateSaidasPatch,
+    deleteSaidas
   };

@@ -6,15 +6,15 @@ const sendEmail = require('../services/emailService').sendEmail;
 
 // Função para registrar um novo usuário 
 
-const registerLoguin = async (req, res) => {
+const registerClientes = async (req, res) => {
     const { name, email, senha, data_aniversario } = req.body; // Desestrutura os dados do corpo da requisição 
 
     // Verificar se o usuário já existe no banco de dados
 
     try {
-        const [existingLoguin] = await dados.promise().query('SELECT * FROM loguin WHERE email = ?', [email]); 
+        const [existingClientes] = await dados.promise().query('SELECT * FROM clientes WHERE email = ?', [email]); 
             
-             if (existingLoguin.length > 0) { 
+             if (existingClientes.length > 0) { 
              return res.status(400).send('Usuário já registrado');
             }
 
@@ -25,7 +25,7 @@ const registerLoguin = async (req, res) => {
             // Inserir o novo usuário no banco de dados
             
             await dados.promise().query( 
-            'INSERT INTO loguin (name, email, senha, data_aniversario) VALUES (?, ?, ?, ?)', 
+            'INSERT INTO clientes (name, email, senha, data_aniversario) VALUES (?, ?, ?, ?)', 
             [name, email, hashedSenha, data_aniversario] 
             ); 
 
@@ -40,26 +40,26 @@ const registerLoguin = async (req, res) => {
 
 // Função para autenticar um usuário 
 
-const loginLoguin = async (req, res) => {
+const loginClientes = async (req, res) => {
     const { email, senha } = req.body; // Desestrutura os dados do corpo da requisição 
 
     // Verificar se o usuário existe no banco de dados
 
     try { 
-        const [loguin] = await dados.promise().query('SELECT * FROM loguin WHERE email = ?', [email]); 
+        const [Clientes] = await dados.promise().query('SELECT * FROM clientes WHERE email = ?', [email]); 
 
-        if (loguin.length === 0) { 
-        return res.status(400).send('Credenciais inválidas'); 
+        if (Clientes.length === 0) { 
+        return res.status(400).send('Credenciais inválidas, email'); 
         } 
 
         // Comparar a senha fornecida com a senha criptografada no banco de dados 
-        const isMatch = await bcrypt.compare(senha, loguin[0].senha); 
+        const isMatch = await bcrypt.compare(senha, Clientes[0].senha); 
         if (!isMatch) { 
-        return res.status(400).send('Credenciais inválidas'); 
+        return res.status(400).send('Credenciais inválidas, senha'); 
         } 
 
         // Gerar um token JWT 
-        const token = jwt.sign({ loguinId: loguin[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' }); 
+        const token = jwt.sign({ ClientesId: Clientes[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' }); 
         res.json({ token }); 
         } catch (err) { 
         console.error('Erro ao autenticar usuário:', err); 
@@ -72,14 +72,14 @@ const loginLoguin = async (req, res) => {
 const requestSenhaReset = async (req, res) => {
     const { email } = req.body;
     try {
-        const [loguin] = await dados.promise().query('SELECT * FROM loguin WHERE email = ?', [email]);
-        if (loguin.length === 0) {
+        const [Clientes] = await dados.promise().query('SELECT * FROM clientes WHERE email = ?', [email]);
+        if (Clientes.length === 0) {
         return res.status(404).send('Usuário não encontrado');
         } 
 
         const token = crypto.randomBytes(20).toString('hex'); // Gera um token aleatório
         const expireDate = new Date(Date.now() + 3600000); // 1 hora para expiração
-        await dados.promise().query('UPDATE loguin SET reset_senha_token = ?, reset_senha_expires = ? WHERE email = ?', [token, expireDate, email]);
+        await dados.promise().query('UPDATE clientes SET reset_senha_token = ?, reset_senha_expires = ? WHERE email = ?', [token, expireDate, email]);
         const resetLink = `http://localhost:3000/reset-senha/${token}`; // Link para redefinição de senha
 
         sendEmail(email, 'Recuperação de Senha - Sistema de Gerenciamento Finance SENAI', `Por favor, clique no link para redefinir sua senha: ${resetLink}`);
@@ -96,13 +96,13 @@ const requestSenhaReset = async (req, res) => {
 const resetSenha = async (req, res) => {
     const { token, novaSenha } = req.body;
     try {
-        const [loguin] = await dados.promise().query('SELECT * FROM loguin WHERE reset_senha_token = ? AND reset_senha_expires > NOW()', [token]);
-        if (loguin.length === 0) {
+        const [Clientes] = await dados.promise().query('SELECT * FROM clientes WHERE reset_senha_token = ? AND reset_senha_expires > NOW()', [token]);
+        if (Clientes.length === 0) {
         return res.status(400).send('Token inválido ou expirado');
         } 
 
         const hashedSenha = await bcrypt.hash(novaSenha, 10); // Criptografa a nova senha
-        await dados.promise().query('UPDATE loguin SET senha = ?, reset_senha_token = NULL, reset_senha_expires = NULL WHERE id = ?', [hashedSenha, loguin[0].id]);
+        await dados.promise().query('UPDATE clientes SET senha = ?, reset_senha_token = NULL, reset_senha_expires = NULL WHERE id = ?', [hashedSenha, Clientes[0].id]);
         res.send('Senha redefinida com sucesso');
         } catch (err) {
         console.error('Erro ao redefinir senha:', err);
@@ -111,8 +111,8 @@ const resetSenha = async (req, res) => {
 };
 
 module.exports = {
-    registerLoguin,
-    loginLoguin,
+    registerClientes,
+    loginClientes,
     requestSenhaReset,
     resetSenha
 };
