@@ -26,8 +26,8 @@ const registerClientes = async (req, res) => {
             
             await dados.promise().query( 
             'INSERT INTO clientes (name, email, senha, data_aniversario) VALUES (?, ?, ?, ?)', 
-            [name, email, hashedSenha, data_aniversario] 
-            ); 
+            [name, email, hashedSenha, data_aniversario]  );
+            
 
             res.status(201).send('Usuário registrado com sucesso'); 
             } catch (err) { 
@@ -40,32 +40,31 @@ const registerClientes = async (req, res) => {
 
 // Função para autenticar um usuário 
 
-const loginClientes = async (req, res) => {
+const loginClientes = async (req, res) => { 
     const { email, senha } = req.body; // Desestrutura os dados do corpo da requisição 
-
-    // Verificar se o usuário existe no banco de dados
-
+   
+    // Verificar se o usuário existe no banco de dados 
     try { 
-        const [Clientes] = await dados.promise().query('SELECT * FROM clientes WHERE email = ?', [email]); 
+    const [clientes] = await dados.promise().query('SELECT * FROM clientes WHERE email = ?', [email]); 
+    if (clientes.length === 0) { 
+    return res.status(400).send('Credenciais inválidas'); 
+    } 
+   
+    // Comparar a senha fornecida com a senha criptografada no banco de dados 
+    const isMatch = await bcrypt.compare(senha, clientes[0].senha); 
+    if (!isMatch) { 
+    return res.status(400).send('Credenciais inválidas'); 
+    } 
+   
+    // Gerar um token JWT 
+    const token = jwt.sign({ clientesId: clientes[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' }); 
+    res.json({ token }); 
+    } catch (err) { 
+    console.error('Erro ao autenticar usuário:', err); 
+    res.status(500).send('Erro ao autenticar usuário'); 
+    } 
+   }; 
 
-        if (Clientes.length === 0) { 
-        return res.status(400).send('Credenciais inválidas, email'); 
-        } 
-
-        // Comparar a senha fornecida com a senha criptografada no banco de dados 
-        const isMatch = await bcrypt.compare(senha, Clientes[0].senha); 
-        if (!isMatch) { 
-        return res.status(400).send('Credenciais inválidas, senha'); 
-        } 
-
-        // Gerar um token JWT 
-        const token = jwt.sign({ ClientesId: Clientes[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' }); 
-        res.json({ token }); 
-        } catch (err) { 
-        console.error('Erro ao autenticar usuário:', err); 
-        res.status(500).send('Erro ao autenticar usuário'); 
-    }
-};
 
 
 // Função para solicitar redefinição de senha
