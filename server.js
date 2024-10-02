@@ -22,7 +22,7 @@ app.use(cors()); // Habilita o CORS para todas as rotas
 app.use(bodyParser.json()); // Configura o BODY-PARSER para analisar requisições JSON
 
 
-const saidasRoutes = require('./rotas/saidas')
+const saidasRoutes = require('./rotas/saidas')//importar as rotas
 const entradaRoutes = require('./rotas/entrada')
 const authRoutes = require('./rotas/auth')
 
