@@ -5,8 +5,8 @@ const dados = require('../configurar/dados'); // Importar a conexão com o banco
 //-------------------------------------------------------------------- Estoque de números -------------------------------------------------------------
 
 // Função para obter todas as trasações
-const getAllEntrada = (req, res) => {
-    dados.query('SELECT * FROM entrada', (err, results) => {
+const getAllTransacoes = (req, res) => {
+    dados.query('SELECT * FROM transacoes', (err, results) => {
         if (err) {
             console.error('Erro ao ober o gastos:', err);
             res.status(500).send('Erro ao obter gastos');
@@ -20,13 +20,13 @@ const getAllEntrada = (req, res) => {
 
 // Função para adicionar uma nova transação
 
-const addEntrada = (req, res) => {
-    const {total, descricao, valor, tipo, clientes_id} = req.body;
+const addTransacoes = (req, res) => {
+    const {tipo, descricao, valor, data, clientes_id} = req.body;
 
         // Verificar se a transação já existe
 
-        dados.query('SELECT * FROM entrada WHERE  total=? AND descricao=? AND valor=? AND tipo=? AND clientes_id=?', 
-            [total, descricao, valor, tipo, clientes_id],
+        dados.query('SELECT * FROM transacoes WHERE  tipo=? AND descricao=? AND valor=? AND data=? AND clientes_id=?', 
+            [tipo, descricao, valor, data, clientes_id],
         (err, results) => {
             if(err) {
                 console.error('Erro ao adicionar gastos', err);
@@ -41,8 +41,8 @@ const addEntrada = (req, res) => {
         // Se a transação não existe, insira-a no banco de dados
         
             dados.query(
-                'INSERT INTO entrada (total, descricao, valor, tipo, clientes_id) VALUES (?,?,?,?,?)',
-                [total, descricao, valor, tipo, clientes_id],
+                'INSERT INTO transacoes (tipo, descricao, valor, data, clientes_id) VALUES (?,?,?,?,?)',
+                [tipo, descricao, valor, data, clientes_id],
                 (err, results) => {
                     if(err) {
                         console.error('Erro ao adicionar gastos', err);
@@ -62,12 +62,12 @@ const addEntrada = (req, res) => {
 
 // Função para atualizar uma transação existente (Substituição Completa)
 
-const updateEntradaPut = (req, res) => {
+const updateTransacoesPut = (req, res) => {
     const{id} = req.params;
-    const {total, descricao, valor, tipo, clientes_id} = req.body;
+    const {tipo, descricao, valor, data, clientes_id} = req.body;
     dados.query(
-        'UPDATE entrada SET total = ?, descricao = ?, valor = ?, tipo = ?, clientes_id = ? WHERE id = ?',
-        [total, descricao, valor, tipo, clientes_id, id],
+        'UPDATE transacoes SET tipo = ?, descricao = ?, valor = ?, data = ?, clientes_id = ? WHERE id = ?',
+        [tipo, descricao, valor, data, clientes_id, id],
         (err, results) => {
             if(err) {
                 console.error('Erro ao atualizar gastos', err);
@@ -91,7 +91,7 @@ const updateEntradaPut = (req, res) => {
 
 // Função para atualizar uma transação existente (substituição parcial)
 
-const updateEntradaPatch = (req, res) => {
+const updateTransacoesPatch = (req, res) => {
     const{id} = req.params;
     const fields = req.body;
     const query = [];
@@ -105,7 +105,7 @@ const updateEntradaPatch = (req, res) => {
     values.push(id);
 
     dados.query(
-        `UPDATE entrada SET ${query.join(',')} WHERE id = ?`,
+        `UPDATE transacoes SET ${query.join(',')} WHERE id = ?`,
         values,
         (err,results) => {
             if(err) {
@@ -131,9 +131,9 @@ const updateEntradaPatch = (req, res) => {
 
 //Função para deletar uma transação existente
 
-const deleteEntrada = (req,res) => {
+const deleteTransacoes = (req,res) => {
     const{id} = req.params;
-    dados.query('DELETE FROM entrada WHERE id = ?',[id],
+    dados.query('DELETE FROM transacoes WHERE id = ?',[id],
     (err,results) => {
         if(err) {
             console.error('Erro ao deletar gastos', err);
@@ -154,9 +154,9 @@ const deleteEntrada = (req,res) => {
 
     
 module.exports = {
-    getAllEntrada,
-    addEntrada,
-    updateEntradaPut,
-    updateEntradaPatch,
-    deleteEntrada
+    getAllTransacoes,
+    addTransacoes,
+    updateTransacoesPut,
+    updateTransacoesPatch,
+    deleteTransacoes
 }
