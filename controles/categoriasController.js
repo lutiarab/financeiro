@@ -4,7 +4,7 @@ const dados = require('../configurar/dados'); // Importar a conexão com o banco
 const getAllCategorias = (req, res) => {
     dados.query('SELECT * FROM categorias', (err, results) => {
         if (err) {
-            console.error('Erro ao ober o transactions:', err);
+            console.error('Erro ao obter o transactions:', err);
             res.status(500).send('Erro ao obter transações');
             return;
         }

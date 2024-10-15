@@ -4,9 +4,6 @@ const transacoesController = require('../controles/transacoesController'); //Imp
 
 
 
-
-//---------------------------------------------- Estoque de números -------------------------------------------------------------
-
 // Definindo uma rota para obter todas as transações
 router.get('/', transacoesController.getAllTransacoes);
 
