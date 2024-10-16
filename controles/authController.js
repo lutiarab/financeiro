@@ -5,6 +5,20 @@ const jwt = require('jsonwebtoken'); // Importa o jsonwebtoken para gerar tokens
 const sendEmail = require('../services/emailService').sendEmail; 
 
 // Função para registrar um novo usuário 
+const verClientes = (req, res)=>{
+    dados.query(
+        `select * from clientes`,
+        (err,results)=>{
+            if(err){
+                console.error('erro ao consultar os usuarios')
+                res.status(404).send('Erro ao consultar os usuarios')
+                return
+            }
+            res.json(results)
+
+        }
+    )
+}
 
 const registerClientes = async (req, res) => {
     const { name, email, senha, data_aniversario } = req.body; // Desestrutura os dados do corpo da requisição 
@@ -110,6 +124,7 @@ const resetSenha = async (req, res) => {
 };
 
 module.exports = {
+    verClientes,
     registerClientes,
     loginClientes,
     requestSenhaReset,
