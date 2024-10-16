@@ -2,7 +2,7 @@
  const router = express.Router(); // Cria um novo roteador 
  const authController = require('../controles/authController'); // Importa o controlador de autenticação 
 
-
+//rota para obter todos os cadastros
  router.get('/',authController.verClientes)
  // Rota para registro de usuário 
  router.post('/register', authController.registerClientes); 
