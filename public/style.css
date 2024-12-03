@@ -15,6 +15,7 @@ body{
 	left: 0;
 	height: 100%;
 	z-index: -1;
+	
 }
 
 .container{
@@ -29,7 +30,14 @@ body{
 .img{
 	display: flex;
 	justify-content: flex-end;
-	align-items: center;
+	align-items:center;
+	
+}
+
+.img-logo{
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
 }
 
 .login-content{
@@ -37,18 +45,21 @@ body{
 	justify-content: flex-start;
 	align-items: center;
 	text-align: center;
+	
 }
 
 .img img{
-	width: 500px;
+	width: 900px;
+	margin-left: 474px;
 }
 
 form{
-	width: 360px;
+	width: 500px;
+	height: 600px;
 }
 
 .login-content img{
-    height: 100px;
+    height: 160px;
 }
 
 .login-content h2{
@@ -103,7 +114,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #38d39f;
+	background-color: hsl(160, 64%, 52%);
 	transition: .4s;
 }
 
@@ -125,7 +136,7 @@ form{
 }
 
 .input-div.focus > .i > i{
-	color: #38d39f;
+	color: #356224;
 }
 
 .input-div > div > input{
@@ -151,7 +162,7 @@ a{
 	display: block;
 	text-align: right;
 	text-decoration: none;
-	color: #999;
+	color: #222121;
 	font-size: 0.9rem;
 	transition: .3s;
 }
@@ -167,7 +178,7 @@ a:hover{
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+	background: #356224;
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
